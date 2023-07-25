@@ -22,7 +22,23 @@ return {
   },
   -- You can disable default plugins as follows:
   -- { "max397574/better-escape.nvim", enabled = false },
-  --
+  -- telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    config = function(plugin, opts)
+      require "plugins.configs.telescope" (plugin, opts)
+      local telescope = require "telescope"
+      telescope.defaults = {
+        layout_strategy = "vertical",
+        layout_config = {
+          height = vim.o.lines,  -- maximally available lines
+          width = vim.o.columns, -- maximally available columns
+          prompt_position = "top",
+          preview_height = 0.6,  -- 60% of available lines
+        },
+      }
+    end,
+  },
   -- You can also easily customize additional setup of plugins that is outside of the plugin's setup call
   -- {
   --   "L3MON4D3/LuaSnip",

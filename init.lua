@@ -18,7 +18,7 @@ return {
   },
 
   -- Set colorscheme to use
-  colorscheme = "astrodark",
+  colorscheme = "tundra",
 
   -- Diagnostics configuration (for vim.diagnostics.config({...})) when diagnostics are on
   diagnostics = {
@@ -42,6 +42,7 @@ return {
       disabled = { -- disable formatting capabilities for the listed language servers
         -- disable lua_ls formatting capability if you want to use StyLua to format your lua code
         -- "lua_ls",
+        "ruff_lsp",
       },
       timeout_ms = 1000, -- default format timeout
       -- filter = function(client) -- fully override the default formatting function
@@ -51,6 +52,7 @@ return {
     -- enable servers that you already have installed without mason
     servers = {
       -- "pyright"
+      --
     },
   },
 
@@ -62,6 +64,54 @@ return {
         -- customize default disabled vim plugins
         disabled_plugins = { "tohtml", "gzip", "matchit", "zipPlugin", "netrwPlugin", "tarPlugin" },
       },
+    },
+  },
+
+  plugins = {
+    {
+      "nyngwang/NeoZoom.lua",
+      config = function()
+        require("neo-zoom").setup {
+          popup = { enabled = true }, -- this is the default.
+          -- NOTE: Add popup-effect (replace the window on-zoom with a `[No Name]`).
+          -- EXPLAIN: This improves the performance, and you won't see two
+          --          identical buffers got updated at the same time.
+          -- popup = {
+          --   enabled = true,
+          --   exclude_filetypes = {},
+          --   exclude_buftypes = {},
+          -- },
+          exclude_buftypes = { "terminal" },
+          -- exclude_filetypes = { 'lspinfo', 'mason', 'lazy', 'fzf', 'qf' },
+          winopts = {
+            offset = {
+              -- NOTE: omit `top`/`left` to center the floating window vertically/horizontally.
+              -- top = 0,
+              -- left = 0.17,
+              width = 180,
+              height = 0.95,
+            },
+            -- NOTE: check :help nvim_open_win() for possible border values.
+            border = "thicc", -- this is a preset, try it :)
+          },
+          presets = {
+            {
+              -- NOTE: regex pattern can be used here!
+              filetypes = { "dapui_.*", "dap-repl" },
+              winopts = {
+                offset = { top = 0.02, left = 0.26, width = 0.74, height = 0.25 },
+              },
+            },
+            {
+              filetypes = { "markdown" },
+              callbacks = {
+                function() vim.wo.wrap = true end,
+              },
+            },
+          },
+        }
+        vim.keymap.set("n", "<CR>", function() vim.cmd "NeoZoomToggle" end, { silent = true, nowait = true })
+      end,
     },
   },
 
